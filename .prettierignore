@@ -1,0 +1,7 @@
+# Ignore built output
+.next/
+dist/
+coverage/
+
+# Ignore Prisma
+src/generated/prisma/**

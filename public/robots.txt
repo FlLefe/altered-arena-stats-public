@@ -1,0 +1,21 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://altered-arena-stats.fr/sitemap.xml
+
+# Optimisations pour les moteurs de recherche
+Disallow: /api/
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /static/
+
+# Permettre l'indexation des pages publiques
+Allow: /
+Allow: /stats
+Allow: /legal/
+Allow: /login
+Allow: /register
+
+# Crawl-delay pour éviter de surcharger le serveur
+Crawl-delay: 1 

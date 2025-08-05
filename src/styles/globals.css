@@ -1,0 +1,277 @@
+@import 'tailwindcss';
+@import './theme.css';
+
+@font-face {
+  font-family: 'Custom Icons';
+  src: url('/fonts/custom-icons.2c3a00d9.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+.custom-icons {
+  font-family: var(--font-custom-icons), 'Custom Icons', sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+@layer base {
+  html {
+    font-family: var(--font-sans, sans-serif);
+    font-size: 16px;
+    scroll-behavior: smooth;
+  }
+
+  code,
+  pre {
+    font-family: var(--font-geist-mono), monospace;
+  }
+
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    transition:
+      background-color var(--transition),
+      color var(--transition);
+    background: 
+      /* Base gradient - darker */
+      linear-gradient(
+        135deg,
+        hsl(222.2 84% 2% / 1) 0%,
+        hsl(217.2 32.6% 8% / 1) 50%,
+        hsl(222.2 84% 2% / 1) 100%
+      ),
+      radial-gradient(circle at 20% 80%, hsl(210 70% 45% / 0.02) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(142 60% 40% / 0.02) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, hsl(267 30% 44% / 0.015) 0%, transparent 50%),
+      linear-gradient(90deg, hsl(0 0% 100% / 0.008) 1px, transparent 1px),
+      linear-gradient(0deg, hsl(0 0% 100% / 0.008) 1px, transparent 1px);
+    background-size:
+      100% 100%,
+      300px 300px,
+      400px 400px,
+      500px 500px,
+      50px 50px,
+      50px 50px;
+    background-position:
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0;
+    background-attachment: fixed;
+  }
+
+  /* Light mode */
+  [data-theme='light'] body {
+    background:
+      linear-gradient(
+        135deg,
+        hsl(45 30% 96% / 1) 0%,
+        hsl(45 25% 94% / 1) 50%,
+        hsl(45 30% 96% / 1) 100%
+      ),
+      radial-gradient(circle at 20% 80%, hsl(210 70% 45% / 0.015) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, hsl(142 60% 40% / 0.015) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, hsl(267 30% 44% / 0.01) 0%, transparent 50%),
+      linear-gradient(90deg, hsl(0 0% 0% / 0.003) 1px, transparent 1px),
+      linear-gradient(0deg, hsl(0 0% 0% / 0.003) 1px, transparent 1px);
+    background-size:
+      100% 100%,
+      300px 300px,
+      400px 400px,
+      500px 500px,
+      50px 50px,
+      50px 50px;
+    background-position:
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0,
+      0 0;
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: 600;
+    color: var(--foreground);
+  }
+
+  p {
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--foreground);
+  }
+
+  a {
+    text-decoration: none;
+    color: var(--primary);
+    transition: color var(--transition);
+  }
+
+  a:hover {
+    opacity: 0.8;
+    cursor: pointer;
+  }
+
+  /* Input and Select styling for better visibility */
+  input,
+  select,
+  textarea {
+    background-color: var(--color-input) !important;
+    border-color: var(--color-input-border) !important;
+    color: var(--color-foreground) !important;
+  }
+
+  input:focus,
+  select:focus,
+  textarea:focus {
+    border-color: var(--color-input-border-focus) !important;
+    outline: none;
+    box-shadow: 0 0 0 2px var(--color-input-border-focus) !important;
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--color-input-placeholder) !important;
+  }
+
+  /* Select dropdown styling */
+  select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    padding-right: 2.5rem;
+  }
+}
+
+/* Sonner toasts */
+[data-sonner-toaster] [data-sonner-toast][data-type='success'] {
+  background-color: #16a34a !important;
+  color: #ffffff !important;
+  border-color: #16a34a !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type='error'] {
+  background-color: #dc2626 !important;
+  color: #ffffff !important;
+  border-color: #dc2626 !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type='warning'] {
+  background-color: #d97706 !important;
+  color: #ffffff !important;
+  border-color: #d97706 !important;
+}
+
+[data-sonner-toaster] [data-sonner-toast][data-type='info'] {
+  background-color: #2563eb !important;
+  color: #ffffff !important;
+  border-color: #2563eb !important;
+}
+
+/* View Transitions */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* Status accent borders for dark mode */
+[data-theme='dark'] .status-accent-win {
+  border-left-color: var(--color-status-success-accent) !important;
+}
+
+[data-theme='dark'] .status-accent-loss {
+  border-left-color: var(--color-status-error-accent) !important;
+}
+
+[data-theme='dark'] .status-accent-draw {
+  border-left-color: var(--color-status-warning-accent) !important;
+}
+
+[data-theme='dark'] .status-accent-progress {
+  border-left-color: var(--color-status-info-accent) !important;
+  background: linear-gradient(90deg, hsl(210 60% 40% / 0.2) 0%, hsl(210 60% 40% / 0.1) 100%);
+}
+
+/* Custom gradient button */
+.btn-gradient-blue {
+  background: linear-gradient(
+    135deg,
+    #60a5fa 0%,
+    #3b82f6 20%,
+    #2563eb 40%,
+    #1d4ed8 60%,
+    #1e40af 80%,
+    #1e3a8a 100%
+  ) !important;
+  background-image: linear-gradient(
+    135deg,
+    #60a5fa 0%,
+    #3b82f6 20%,
+    #2563eb 40%,
+    #1d4ed8 60%,
+    #1e40af 80%,
+    #1e3a8a 100%
+  ) !important;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3) !important;
+  cursor: pointer !important;
+}
+
+.btn-gradient-blue:hover {
+  background: linear-gradient(
+    135deg,
+    #3b82f6 0%,
+    #2563eb 20%,
+    #1d4ed8 40%,
+    #1e40af 60%,
+    #1e3a8a 80%,
+    #1e1b4b 100%
+  ) !important;
+  background-image: linear-gradient(
+    135deg,
+    #3b82f6 0%,
+    #2563eb 20%,
+    #1d4ed8 40%,
+    #1e40af 60%,
+    #1e3a8a 80%,
+    #1e1b4b 100%
+  ) !important;
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4) !important;
+  transform: translateY(-2px) !important;
+}

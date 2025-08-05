@@ -1,0 +1,164 @@
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "windows", "rhel-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum MatchType {
+  TOURNAMENT
+  FRIENDLY
+}
+
+enum MatchFormat {
+  BO1
+  BO3
+  BO5
+  BO7
+  BO9
+}
+
+enum GameStatus {
+  WIN
+  LOSS
+  DRAW
+}
+
+enum MatchStatus {
+  WIN
+  LOSS
+  DRAW
+  IN_PROGRESS
+}
+
+enum UserRole {
+  user
+  admin
+}
+
+enum EventType {
+  DEFAULT
+  CUSTOM
+}
+
+model Player {
+  id                BigInt   @id @default(autoincrement())
+  authId            String   @db.Uuid @unique
+  alteredAlias      String   @unique @db.VarChar(20)
+  favoriteFactionId BigInt?
+  favoriteFaction   Faction? @relation("FavoriteFaction", fields: [favoriteFactionId], references: [id])
+  favoriteHeroId    BigInt?
+  favoriteHero      Hero?    @relation("FavoriteHero", fields: [favoriteHeroId], references: [id])
+  role              UserRole @default(user)
+  profileComplete   Boolean  @default(false)
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  deletedAt         DateTime?
+
+  // Relations
+  matches           Match[]
+  opponentMatches   Match[] @relation("Opponent")
+}
+
+model Faction {
+  id         BigInt   @id @default(autoincrement())
+  name       String   @unique
+  colorCode  String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+
+  // Relations
+  players    Player[] @relation("FavoriteFaction")
+  heroes     Hero[]
+}
+
+model Hero {
+  id            BigInt   @id @default(autoincrement())
+  name          String   @unique
+  factionId     BigInt
+  faction       Faction  @relation(fields: [factionId], references: [id])
+  imageUrl      String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+
+  // Relations
+  players       Player[] @relation("FavoriteHero")
+  playerGames   Game[]   @relation("PlayerHero")
+  opponentGames Game[]   @relation("OpponentHero")
+}
+
+model Season {
+  id         BigInt   @id @default(autoincrement())
+  name       String   @unique
+  startDate  DateTime
+  endDate    DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now())
+
+  // Relations
+  events     Event[]
+  matches    Match[]
+}
+
+model Event {
+  id        BigInt   @id @default(autoincrement())
+  name      String   @unique
+  eventType EventType @default(CUSTOM)
+  startDate DateTime?
+  endDate   DateTime?
+  seasonId  BigInt?
+  season    Season?  @relation(fields: [seasonId], references: [id])
+  matches   Match[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deleted   Boolean  @default(false)
+
+  @@index([seasonId])
+}
+
+model Match {
+  id            String     @id @db.Uuid
+  matchType     MatchType
+  matchFormat   MatchFormat
+  matchStatus   MatchStatus
+  comment       String?    @db.VarChar(500)
+  opponentName  String?
+  opponentId    BigInt? 
+  opponent      Player?    @relation("Opponent", fields: [opponentId], references: [id])
+  playerId      BigInt?
+  player        Player?    @relation(fields: [playerId], references: [id])
+  seasonId      BigInt
+  season        Season     @relation(fields: [seasonId], references: [id])
+  eventId       BigInt?
+  event         Event?     @relation(fields: [eventId], references: [id])
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @default(now())
+
+  // Relations
+  games         Game[]
+
+  //Index 
+  @@index([playerId])
+}
+
+model Game {
+  id              String     @id @db.Uuid
+  matchId         String     @db.Uuid
+  match           Match      @relation(fields: [matchId], references: [id])
+  playerHeroId    BigInt
+  playerHero      Hero       @relation("PlayerHero", fields: [playerHeroId], references: [id])
+  opponentHeroId  BigInt
+  opponentHero    Hero       @relation("OpponentHero", fields: [opponentHeroId], references: [id])
+  gameStatus      GameStatus
+  comment         String?    @db.VarChar(500)
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @default(now())
+
+  //Index
+  @@index([matchId])
+  @@index([playerHeroId])
+}
